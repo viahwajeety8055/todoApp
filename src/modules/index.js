@@ -7,6 +7,6 @@ const sampleModules = require("app_modules/sample_fintech/routes");
 // module_route: /sample
 // module_description:
 //      handles routes related to sample module
-appModules.use("/provider", sampleModules)
+appModules.use("/sample", sampleModules)
 
 module.exports = appModules;
