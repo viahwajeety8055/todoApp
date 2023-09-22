@@ -8,7 +8,7 @@ const compression = require("compression");
 
 const sharedConstants = require("shared/constants");
 const sharedMiddlewares = require("shared/middlewares");
-const appModules = require("modules");
+const appModules = require("../src/modules");
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(helmet());
 // enable CORS implementation
 app.use(
     cors({
-        // origin: "http://localhost:3001",
+        origin: "http://localhost:3001",
         methods: "GET,POST",
         preflightContinue: false,
         optionsSuccessStatus: 204,

@@ -1,7 +1,7 @@
 const express = require("express");
 const appModules = express.Router();
 
-const sampleModules = require("app_modules/sample_fintech/routes");
+const sampleModules = require("app_modules/sample_module/routes");
 
 // module_name: sample
 // module_route: /sample

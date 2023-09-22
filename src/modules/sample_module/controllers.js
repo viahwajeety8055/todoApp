@@ -10,4 +10,4 @@ sampleModuleControllers.test = async (req, res, next) => {
     // return response/raise an exception
 };
 
-module.exports = sampleModulesControllers;
+module.exports = sampleModuleControllers;
