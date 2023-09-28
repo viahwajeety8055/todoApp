@@ -1,11 +1,13 @@
 const sampleModels = require("./sample.models");
-const authModels = require("./user.models");
-const todoModels = require("./todo.models");
+const userModels = require("./user.models");
+const todoModels = require("./blog.models");
+const blogModels = require("./blog.models");
 
 const sharedModels = {
   sample: sampleModels,
   user: userModels,
   todo: todoModels,
+  blog: blogModels,
 };
 
 module.exports = sharedModels;

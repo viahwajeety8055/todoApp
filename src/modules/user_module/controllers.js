@@ -1,46 +1,56 @@
 const userValidators = require("./validators");
 const userServices = require("./services");
+const userConstants = require("./constants");
 
 const userModuleControllers = {};
 
-// controller_name: test
+// controller_name: register
 // controller_description:
-//      controller used to test sample module controller file
+//      controller used to register user module
 userModuleControllers.register = async (req, res, next) => {
   try {
+    // validate request/raise an exception
     const validatedRequest = userValidators.register(req);
 
+    // handle logic within service function
     const data = await userServices.register({
       name: validatedRequest.name,
-      gender: validatedRequest.gender,
       email: validatedRequest.email,
       password: validatedRequest.password,
     });
-  } catch (error) {}
 
-  // validate request/raise an exception
-  // handle logic within service function
-  // parse response
-  // return response/raise an exception
+    // return response
+    next({
+      result: data,
+      ...userConstants.register.messages.ULNS0001,
+    });
+  } catch (error) {
+    next(JSON.parse(error.message));
+  }
 };
 
-sampleModuleControllers.getDetails = async (req, res, next) => {
-  const validatedRequest = studentValidators.getDetailsValidators(req);
+// controller_name: login
+// controller_description:
+//      controller used to login user module
+userModuleControllers.login = async (req, res, next) => {
+  try {
+    // validate request/raise an exception
+    const validatedRequest = userValidators.login(req);
 
-  const data = await studentService.getDetailsService({
-    studentId: parseInt(validatedRequest.id),
-  });
-
-  if (data.length == 0)
-    next({
-      result: "Data not found",
-      ...studentConstant.getDetailsConstants.messages.SAMS0001,
+    // handle logic within service function
+    const data = await userServices.login({
+      email: validatedRequest.email,
+      password: validatedRequest.password,
     });
 
-  next({
-    result: data,
-    ...studentConstant.getDetailsConstants.messages.SAMS0001,
-  });
+    // return final response
+    next({
+      result: data,
+      ...userConstants.login.messages.ULNS0001,
+    });
+  } catch (error) {
+    next(JSON.parse(error.message));
+  }
 };
 
 module.exports = userModuleControllers;

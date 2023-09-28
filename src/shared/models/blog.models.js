@@ -1,18 +1,17 @@
 const sharedServices = require("shared/services");
 const sharedConstants = require("shared/constants");
 
-const userModels = {};
+const blogModels = {};
 
 // @model-name: create
-// @model-desc: create a new sample
-userModels.create = async ({ name, email, password }) => {
+// @model-desc: create a new blog
+blogModels.create = async ({ content, userid }) => {
   const result = await new sharedServices.mysqlServices()
     .insert(
-      sharedConstants.dbTableNames.user,
+      sharedConstants.dbTableNames.blog,
       sharedServices.mysqlHelperServices.parseInsertValues({
-        name: name,
-        email: email,
-        password: password,
+        userid,
+        content,
       })
     )
     .build();
@@ -21,27 +20,25 @@ userModels.create = async ({ name, email, password }) => {
 };
 
 // @model-name: read
-// @model-desc: read sample based on filter
-userModels.read = async (whereParams) => {
+// @model-desc: read blog based on filter
+blogModels.read = async (whereParams) => {
   const where = [];
 
-  if (whereParams.email) {
-    where.push(`email='${whereParams.email}'`);
-  }
+  console.log(whereParams);
 
-  if (whereParams.userId) {
+  if (whereParams.userid) {
     where.push(`userid='${whereParams.userid}'`);
   }
 
   let result = new sharedServices.mysqlServices()
     .select(
       `
+            blogid AS blogid,
             userid AS userid,
-            email AS email,
-            password As password
+            content AS content
             `
     )
-    .from(sharedConstants.dbTableNames.user);
+    .from(sharedConstants.dbTableNames.blog);
 
   if (where.length) {
     result = result.where(where.join(" AND "));
@@ -54,22 +51,20 @@ userModels.read = async (whereParams) => {
 
 // @model-name: update
 // @model-desc: update sample based on update and where params
-userModels.update = async (updateParams, whereParams) => {
+blogModels.update = async (updateParams, whereParams) => {
   const where = [];
 
-  if (whereParams.name) {
-    where.push(`name='${whereParams.name}'`);
-  }
-  if (whereParams.email) {
-    where.push(`name='${whereParams.email}'`);
+  console.log(whereParams, updateParams);
+
+  if (whereParams.userid) {
+    where.push(`userid=${whereParams.userid}`);
   }
 
   const result = await new sharedServices.mysqlServices()
     .update(
-      sharedConstants.dbTableNames.healthcheckReport,
+      sharedConstants.dbTableNames.blog,
       sharedServices.mysqlHelperServices.parseUpdateValues({
-        name: updateParams.name,
-        email: updateParams.email,
+        content: updateParams.content,
       })
     )
     .where(where.join(" AND "))
@@ -79,20 +74,20 @@ userModels.update = async (updateParams, whereParams) => {
 };
 
 // @model-name: delete
-// @model-desc: delete sample based on where params
-userModels.delete = async (whereParams) => {
+// @model-desc: delete blog based on where params
+blogModels.delete = async (whereParams) => {
   const where = [];
 
-  if (whereParams.name) {
-    where.push(`healthcheck_report_ref_id='${whereParams.name}'`);
+  if (whereParams.userid) {
+    where.push(`userid='${whereParams.userid}'`);
   }
 
   const result = await new sharedServices.mysqlServices()
-    .delete(sharedConstants.dbTableNames.sampleDb)
+    .delete(sharedConstants.dbTableNames.blog)
     .where(where.join(" AND "))
     .build();
 
   return result;
 };
 
-module.exports = userModels;
+module.exports = blogModels;
